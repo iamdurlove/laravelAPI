@@ -17,12 +17,10 @@ use Illuminate\Support\Facades\App;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-Route::get(
-    '/',
-    function () {
-        return view('welcome');
-    }
-)->name('index');
+Route::get('/', [IndexController::class, 'index'])->name('index');
+Route::get('/*', function () {
+    echo "404 ERROR";
+});
 
 Route::get('/register', [RegistrationController::class, 'index'])->name('register');
 
@@ -45,11 +43,12 @@ Route::get('/no-access', function () {
 
 // middleware group for database relations
 Route::middleware(['guard'])->group(function () {
-    Route::get('/data', [IndexController::class, 'index'])->middleware('guard');
-    Route::get('/data2', [IndexController::class, 'index2'])->middleware('guard');
+    Route::get('/data', [IndexController::class, 'data'])->middleware('guard');
+    Route::get('/data2', [IndexController::class, 'data2'])->middleware('guard');
 });
 
-// Route::get('/data2', [IndexController::class, 'index2'])->middleware('guard')->name('data2');
+//route model binding
+Route::get('/blood/{id}', [IndexController::class, 'blood']);
 
 //retireving all sessions
 Route::get('/get-all-session', function () {
