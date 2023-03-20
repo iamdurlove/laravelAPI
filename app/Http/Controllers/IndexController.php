@@ -16,4 +16,9 @@ class IndexController extends Controller
         // return Customers::find(2)->getBloodGroup()->get();
         // return Customers::with('getBloodGroup')->get();
     }
+
+    public function index2()
+    {
+        return Customers::all();
+    }
 }

@@ -43,8 +43,13 @@ Route::get('/no-access', function () {
     echo 'You are not allowed to access this page.';
 })->name('no-route');
 
-// database relations
-Route::get('/data', [IndexController::class, 'index'])->middleware('guard')->name('data');
+// middleware group for database relations
+Route::middleware(['guard'])->group(function () {
+    Route::get('/data', [IndexController::class, 'index'])->middleware('guard');
+    Route::get('/data2', [IndexController::class, 'index2'])->middleware('guard');
+});
+
+// Route::get('/data2', [IndexController::class, 'index2'])->middleware('guard')->name('data2');
 
 //retireving all sessions
 Route::get('/get-all-session', function () {
@@ -56,7 +61,7 @@ Route::get('/get-all-session', function () {
 Route::get('/set-session', function (Request $request) {
     $request->session()->put('user_name', 'Durlav Parajuli');
     $request->session()->put('user_id', '123');
-    $request->session()->flash('status', 'Success'); //flash one time only
+    // $request->session()->flash('status', 'Success'); //flash one time only
     return redirect('get-all-session');
 });
 
