@@ -16,12 +16,10 @@ class WebGuard
     public function handle(Request $request, Closure $next): Response
     {
         // echo $request->age;
-        if ($request->age > 18)
+        if (session()->has('user_id'))
             return $next($request);
         else {
-            echo "access denied";
-            die;
+            return redirect('/no-access');
         }
-
     }
 }

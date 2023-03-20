@@ -24,11 +24,7 @@ Route::get(
     }
 )->name('index');
 
-// database relations
-Route::get('/data', [IndexController::class, 'index'])->name('data');
-
 Route::get('/register', [RegistrationController::class, 'index'])->name('register');
-
 
 Route::group(['prefix' => '/customer'], function () {
     Route::get('/', [CustomerController::class, 'index'])->name('customer');
@@ -42,6 +38,14 @@ Route::group(['prefix' => '/customer'], function () {
 });
 
 
+//middleware checking
+Route::get('/no-access', function () {
+    echo 'You are not allowed to access this page.';
+})->name('no-route');
+
+// database relations
+Route::get('/data', [IndexController::class, 'index'])->middleware('guard')->name('data');
+
 //retireving all sessions
 Route::get('/get-all-session', function () {
     $session = session()->all();
@@ -52,7 +56,7 @@ Route::get('/get-all-session', function () {
 Route::get('/set-session', function (Request $request) {
     $request->session()->put('user_name', 'Durlav Parajuli');
     $request->session()->put('user_id', '123');
-    // $request->session()->flash('status', 'Success');  //flash one time only
+    $request->session()->flash('status', 'Success'); //flash one time only
     return redirect('get-all-session');
 });
 
